@@ -137,6 +137,47 @@ STORAGE_TYPES = ["io1", "io2", "gp1", "gp2"]
 INSTANCE_SIZES = ["micro", "small", "medium", "large", "xlarge", "2xlarge"]
 INSTANCE_FAMILIES = ["t3", "m5", "r5"]
 
+# Tag constants
+TAG_KEYS_NAME = [
+    "name",
+    "app_name",
+    "project_name",
+    "component",
+    "component_name",
+    "microservice",
+    "service",
+]
+TAG_KEYS_ENV = ["env", "Env", "ENV", "environment", "Environment"]
+TAG_VALUES_ENV = [
+    "dev",
+    "Dev",
+    "developer",
+    "Developer",
+    "development",
+    "Development",
+    "stage",
+    "Stage",
+    "staging",
+    "Staging",
+    "prod",
+    "Prod",
+    "production",
+    "Production",
+]
+TAG_KEYS_COST = [
+    "cost",
+    "Cost",
+    "costfamily",
+    "cost_family",
+    "Cost_Family",
+    "CostFamily",
+    "cost_category",
+    "Cost_Category",
+    "CostCategory",
+]
+TAG_KEYS_DEPARTMENT = ["dept", "Dept", "department", "departments"]
+TAG_VALUES_DEPARTMENT = ["engineering", "tech", "marketing", "support", "sre"]
+
 
 class AWSProvider(faker.providers.BaseProvider):
     """Provider for Faker which adds fake names for the AWS ecosystem."""
@@ -161,6 +202,39 @@ class AWSProvider(faker.providers.BaseProvider):
             )
 
         return "t3.medium"
+
+    def tag(self):
+
+        # Common tags are env, appname, cluster, cost
+        r = random.randrange(3)
+
+        # Env
+        if r == 0:
+            return (
+                self.random_element(TAG_KEYS_ENV),
+                self.random_element(TAG_VALUES_ENV),
+            )
+
+        # Appname
+        elif r == 1:
+            return (
+                self.random_element(TAG_KEYS_NAME),
+                self.random_element(PROJECT_NAMES),
+            )
+
+        # Cost tag
+        elif r == 2:
+            return (
+                self.random_element(TAG_KEYS_COST),
+                self.random_element(TAG_VALUES_DEPARTMENT),
+            )
+
+        # Department tag
+        else:
+            return (
+                self.random_element(TAG_KEYS_DEPARTMENT),
+                self.random_element(TAG_VALUES_DEPARTMENT),
+            )
 
     def arn(
         self,

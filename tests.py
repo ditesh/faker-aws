@@ -21,6 +21,11 @@ class TestAWS(unittest.TestCase):
         self.assertTrue(isinstance(region, str))
         self.assertTrue(len(region) > 0)
 
+    def test_tag(self):
+        region = self.fake.region()
+        self.assertTrue(isinstance(region, str))
+        self.assertTrue(len(region) > 0)
+
     def test_service(self):
         service = self.fake.service()
         self.assertTrue(isinstance(service, str))
